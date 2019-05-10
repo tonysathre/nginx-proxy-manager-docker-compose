@@ -1,4 +1,4 @@
-version: "3.3"
+version: "2"
 services:
   app:
     image: jc21/nginx-proxy-manager:latest
@@ -9,8 +9,8 @@ services:
     networks:
       - nginxproxymanager
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - app_data:/data
+      - letsencrypt:/etc/letsencrypt
     configs:
        - source: nginxproxymanager_config
          target: /app/config/production.json
@@ -30,7 +30,7 @@ services:
     networks:
       - nginxproxymanager
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - db_data:/var/lib/mysql
     deploy:
       restart_policy:
         condition: on-failure
@@ -46,3 +46,8 @@ networks:
   nginxproxymanager:
     driver: overlay
     attachable: true
+
+volumes:
+    app_data:
+    db_data:
+    letsencrypt:
