@@ -1,0 +1,48 @@
+version: "3.3"
+services:
+  app:
+    image: jc21/nginx-proxy-manager:latest
+    ports:
+      - ${HTTP_PORT:-80}:80
+      - ${ADMIN_PORT:-81}:81
+      - ${HTTPS_PORT:-443}:443
+    networks:
+      - nginxproxymanager
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    configs:
+       - source: nginxproxymanager_config
+         target: /app/config/production.json
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 100
+        window: 380s
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: "npm"
+      MYSQL_DATABASE: "npm"
+      MYSQL_USER: "npm"
+      MYSQL_PASSWORD: "npm"
+    networks:
+      - nginxproxymanager
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 20
+        window: 380s
+
+configs:
+  nginxproxymanager_config:
+    file: ./production.json
+
+networks:
+  nginxproxymanager:
+    driver: overlay
+    attachable: true
