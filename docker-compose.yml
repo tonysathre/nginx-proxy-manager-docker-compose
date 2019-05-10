@@ -11,9 +11,7 @@ services:
     volumes:
       - app_data:/data
       - letsencrypt:/etc/letsencrypt
-    configs:
-       - source: nginxproxymanager_config
-         target: /app/config/production.json
+      - ./production.json:/app/config/production.json
     restart: on-failure
 
   db:
@@ -28,10 +26,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     restart: on-failure
-
-configs:
-  nginxproxymanager_config:
-    file: ./production.json
 
 networks:
   nginxproxymanager:
