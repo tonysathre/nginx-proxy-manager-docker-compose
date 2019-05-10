@@ -14,12 +14,8 @@ services:
     configs:
        - source: nginxproxymanager_config
          target: /app/config/production.json
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 100
-        window: 380s
+    restart: on-failure
+
   db:
     image: mariadb:latest
     environment:
@@ -31,12 +27,7 @@ services:
       - nginxproxymanager
     volumes:
       - db_data:/var/lib/mysql
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 20
-        window: 380s
+    restart: on-failure
 
 configs:
   nginxproxymanager_config:
