@@ -6,8 +6,6 @@ services:
       - ${HTTP_PORT}:80
       - ${ADMIN_PORT}:81
       - ${HTTPS_PORT}:443
-    networks:
-      - nginxproxymanager
     volumes:
       - app_data:/data
       - letsencrypt:/etc/letsencrypt
@@ -26,11 +24,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     restart: unless-stopped
-
-networks:
-  nginxproxymanager:
-    driver: overlay
-    attachable: true
 
 volumes:
     app_data:
