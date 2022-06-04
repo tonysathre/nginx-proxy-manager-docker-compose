@@ -12,20 +12,20 @@ services:
       - app_data:/data
       - letsencrypt:/etc/letsencrypt
       - ./production.json:/app/config/production.json
-    restart: on-failure
+    restart: unless-stopped
 
   db:
     image: mariadb:latest
     environment:
-      MYSQL_ROOT_PASSWORD: "npm"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: "npm"
-      MYSQL_USER: "npm"
-      MYSQL_PASSWORD: "npm"
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - nginxproxymanager
     volumes:
       - db_data:/var/lib/mysql
-    restart: on-failure
+    restart: unless-stopped
 
 networks:
   nginxproxymanager:
