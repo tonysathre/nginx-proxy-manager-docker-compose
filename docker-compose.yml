@@ -19,8 +19,6 @@ services:
       MYSQL_DATABASE: "npm"
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    networks:
-      - nginxproxymanager
     volumes:
       - db_data:/var/lib/mysql
     restart: unless-stopped
